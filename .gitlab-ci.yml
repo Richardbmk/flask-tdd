@@ -3,6 +3,7 @@ image: docker:stable
 stages:
   - build
   - test
+  - deploy
 
 variables:
   IMAGE: ${CI_REGISTRY}/richardbmk/${CI_PROJECT_NAME}
@@ -39,3 +40,22 @@ test:
     - flake8 src
     - black src --check
     - isort src --check-only
+
+deploy:
+  stage: deploy
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay2
+    HEROKU_APP_NAME: secure-coast-94063
+    HEROKU_REGISTRY_IMAGE: registry.heroku.com/secure-coast-94063/web
+  script:
+    - apk add --no-cache curl
+    - chmod +x ./release.sh
+    - docker build
+      --tag $HEROKU_REGISTRY_IMAGE
+      --file ./Dockerfile.prod
+      "."
+    - docker login -u _ -p $HEROKU_AUTH_TOKEN registry.heroku.com
+    - docker push $HEROKU_REGISTRY_IMAGE
+    - ./release.sh
