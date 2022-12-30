@@ -26,7 +26,7 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requir
 COPY . . 
 RUN pip install black==22.3.0 flake8==4.0.1 isort==5.10.1
 RUN flake8 src
-RUN blck src --check
+RUN black src --check
 RUN isort src --check-only
 
 ############
