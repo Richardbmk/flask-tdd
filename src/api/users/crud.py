@@ -1,7 +1,7 @@
-# src/api/crud.py
+# src/api/users/crud.py
 
 from src import db
-from src.api.models import User
+from src.api.users.models import User
 
 
 def get_all_users():
