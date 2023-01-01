@@ -1,7 +1,6 @@
 # src/api/ping.py
 
-from flask import Blueprint
-from flask_restx import Api, Namespace, Resource
+from flask_restx import Namespace, Resource
 
 ping_namespace = Namespace("ping")
 
